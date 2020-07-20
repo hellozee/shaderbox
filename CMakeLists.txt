@@ -16,6 +16,7 @@ add_executable(
 target_link_libraries(
     shaderbox
     SDL2::SDL2
+    SDL2::SDL2main
     OpenGL::GL
     GLEW::GLEW
 )
