@@ -1,5 +1,6 @@
-#include <iostream>
+#include "window/window.hh"
 
 int main() {
-    std::cout << "Hello" << std::endl;
+    auto app = shaderbox::Window{800, 600, "ShaderBox"};
+    return app.exec();
 }
