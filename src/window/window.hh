@@ -11,7 +11,7 @@ namespace shaderbox
         Window(unsigned width, unsigned height, std::string title);
         ~Window();
 
-        int exec();
+        int exec(unsigned int program);
 
         private:
         SDL_Window *m_window;

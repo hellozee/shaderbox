@@ -11,6 +11,8 @@ add_executable(
     src/main.cc
     src/window/window.hh
     src/window/window.cc
+    src/shader/program.hh
+    src/shader/program.cc
 )
 
 target_link_libraries(
@@ -20,3 +22,6 @@ target_link_libraries(
     OpenGL::GL
     GLEW::GLEW
 )
+
+configure_file(src/res/vertex.glsl ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
+configure_file(src/res/fragment.glsl ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)

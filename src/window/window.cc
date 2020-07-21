@@ -39,12 +39,15 @@ Window::~Window()
     SDL_Quit();
 }
 
-int Window::exec()
+int Window::exec(unsigned int program)
 {
     while(true) {
 
         glClearColor(0., 0., 0., 1.);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        glUseProgram(program);
+        glDrawArrays(GL_TRIANGLES, 0, 4);
 
         SDL_Event event;
 
