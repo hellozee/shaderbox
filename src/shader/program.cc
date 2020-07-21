@@ -9,7 +9,7 @@ Shader::Shader(const std::string& source, GLenum type, GLuint program) {
 	m_shader = glCreateShader(type);
 
 	if (!m_shader) {
-		throw std::exception{"Can't create a shader"};
+		throw std::runtime_error{"Can't create a shader"};
 	}
 
 	auto shader_source = static_cast<const GLchar*>(source.c_str());
@@ -33,7 +33,7 @@ void Shader::checkout_shader() {
 
 	if (success == GL_FALSE) {
 		glGetShaderInfoLog(m_shader, sizeof(error), nullptr, error);
-		throw std::exception{error};
+		throw std::runtime_error{error};
 	}
 
 	delete error;
@@ -79,7 +79,7 @@ void Program::checkout_program(GLuint flag) {
 
 	if (success == GL_FALSE) {
 		glGetShaderInfoLog(m_program, sizeof(error), nullptr, error);
-		throw std::exception{error};
+		throw std::runtime_error{error};
 	}
 
 	delete error;

@@ -1,6 +1,6 @@
 #include "window.hh"
 
-#include <exception>
+#include <stdexcept>
 #include <GL/glew.h>
 
 using namespace shaderbox;
@@ -26,7 +26,7 @@ Window::Window(unsigned width, unsigned height, std::string title)
     GLenum status = glewInit();
 
     if(status != GLEW_OK){
-        throw std::exception{"Couldn't initialize OpenGL"};
+        throw std::runtime_error{"Couldn't initialize OpenGL"};
     }
 
     glEnable(GL_DEPTH_TEST);

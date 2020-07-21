@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.0)
 
 project(shaderbox)
 
+set(CMAKE_CXX_STANDARD 17)
+
 find_package(sdl2 REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(OpenGL REQUIRED)
@@ -15,10 +17,14 @@ add_executable(
     src/shader/program.cc
 )
 
+if (MSVC) 
+    set(SDL_MAIN "SDL2::SDL2main")
+endif()
+
 target_link_libraries(
     shaderbox
     SDL2::SDL2
-    SDL2::SDL2main
+    ${SDL_MAIN}
     OpenGL::GL
     GLEW::GLEW
 )
