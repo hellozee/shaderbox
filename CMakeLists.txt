@@ -48,4 +48,4 @@ add_custom_command(TARGET shaderbox POST_BUILD
 )
 
 install(TARGETS shaderbox RUNTIME DESTINATION bin)
-install(DIRECTORY src/res/ DESTINATION share/shaderbox/shaders)
+install(DIRECTORY src/res/ DESTINATION bin/shaders)
