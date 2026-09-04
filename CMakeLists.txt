@@ -1,11 +1,15 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.16)
 
-project(shaderbox)
+project(shaderbox VERSION 0.1.0 LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-find_package(sdl2 REQUIRED)
-find_package(GLEW REQUIRED)
+find_package(SDL2 CONFIG QUIET)
+if (NOT TARGET SDL2::SDL2)
+    find_package(SDL2 REQUIRED)
+endif()
 find_package(OpenGL REQUIRED)
 
 add_executable(
@@ -17,17 +21,31 @@ add_executable(
     src/shader/program.cc
 )
 
-if (MSVC) 
-    set(SDL_MAIN "SDL2::SDL2main")
-endif()
+target_compile_definitions(shaderbox PRIVATE
+    SHADERBOX_SHADER_DIR="${CMAKE_CURRENT_BINARY_DIR}/shaders"
+    GL_GLEXT_PROTOTYPES=1
+)
+
+target_compile_options(shaderbox PRIVATE
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+    $<$<CXX_COMPILER_ID:MSVC>:/W4>
+)
 
 target_link_libraries(
     shaderbox
     SDL2::SDL2
-    ${SDL_MAIN}
     OpenGL::GL
-    GLEW::GLEW
+)
+if (WIN32 AND TARGET SDL2::SDL2main)
+    target_link_libraries(shaderbox PRIVATE SDL2::SDL2main)
+endif()
+
+add_custom_command(TARGET shaderbox POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:shaderbox>/shaders"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+            "${CMAKE_CURRENT_SOURCE_DIR}/src/res"
+            "$<TARGET_FILE_DIR:shaderbox>/shaders"
 )
 
-configure_file(src/res/vertex.glsl ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
-configure_file(src/res/fragment.glsl ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
+install(TARGETS shaderbox RUNTIME DESTINATION bin)
+install(DIRECTORY src/res/ DESTINATION share/shaderbox/shaders)
