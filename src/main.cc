@@ -18,8 +18,8 @@ int main(int argc, char **argv) {
     const auto shader_dir = executable_dir / "shaders";
     const auto fragment = argc > 1 ? std::filesystem::path{argv[1]}
                                    : shader_dir / "fragment.glsl";
-    auto program = shaderbox::ShaderProgram{shader_dir / "vertex.glsl", fragment};
     SDL_free(base_path);
+    auto program = shaderbox::ShaderProgram{shader_dir / "vertex.glsl", fragment};
     return app.exec(program);
   } catch (const std::exception &error) {
     std::cerr << "shaderbox: " << error.what() << '\n';
