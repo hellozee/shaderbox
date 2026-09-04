@@ -5,14 +5,21 @@
 #include <exception>
 #include <filesystem>
 #include <iostream>
+#include <stdexcept>
 
 int main(int argc, char **argv) {
   try {
-    const auto shader_dir = std::filesystem::path{SHADERBOX_SHADER_DIR};
+    auto app = shaderbox::Window{960, 540, "ShaderBox"};
+    const auto base_path = SDL_GetBasePath();
+    if (base_path == nullptr) {
+      throw std::runtime_error{"Unable to determine executable path: " + std::string{SDL_GetError()}};
+    }
+    auto executable_dir = std::filesystem::path{base_path};
+    const auto shader_dir = executable_dir / "shaders";
     const auto fragment = argc > 1 ? std::filesystem::path{argv[1]}
                                    : shader_dir / "fragment.glsl";
-    auto app = shaderbox::Window{960, 540, "ShaderBox"};
     auto program = shaderbox::ShaderProgram{shader_dir / "vertex.glsl", fragment};
+    SDL_free(base_path);
     return app.exec(program);
   } catch (const std::exception &error) {
     std::cerr << "shaderbox: " << error.what() << '\n';

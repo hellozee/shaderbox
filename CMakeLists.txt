@@ -21,10 +21,7 @@ add_executable(
     src/shader/program.cc
 )
 
-target_compile_definitions(shaderbox PRIVATE
-    SHADERBOX_SHADER_DIR="${CMAKE_CURRENT_BINARY_DIR}/shaders"
-    GL_GLEXT_PROTOTYPES=1
-)
+target_compile_definitions(shaderbox PRIVATE GL_GLEXT_PROTOTYPES=1)
 
 target_compile_options(shaderbox PRIVATE
     $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
